@@ -1,32 +1,76 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>AI Store</title>
+  <title>My Pro Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial; margin: 0; background: #f4f4f4; }
+    header { background: black; color: white; padding: 15px; text-align: center; }
+    .container { padding: 20px; }
+    .product { background: white; padding: 15px; margin-bottom: 15px; border-radius: 10px; }
+    button { background: green; color: white; padding: 10px; border: none; border-radius: 5px; }
+    .cart { background: orange; padding: 10px; margin-top: 20px; border-radius: 10px; }
+    input { padding: 8px; width: 90%; margin: 5px 0; }
+  </style>
 </head>
 <body>
-<h1>My AI eCommerce Store</h1>
 
-<h2>Smart Watch - ₹1999</h2>
-<button onclick="alert('Added to cart')">Add to Cart</button>
+<header>
+  <h1>My Pro Ecommerce Store</h1>
+</header>
 
-<h3>Ask AI</h3>
-<input id="msg" placeholder="Ask about product">
-<button onclick="askAI()">Ask</button>
+<div class="container">
 
-<div id="chat"></div>
+  <div class="product">
+    <h3>Smart Watch</h3>
+    <p>₹1999</p>
+    <button onclick="addToCart('Smart Watch',1999)">Add to Cart</button>
+  </div>
+
+  <div class="product">
+    <h3>Bluetooth Earbuds</h3>
+    <p>₹999</p>
+    <button onclick="addToCart('Bluetooth Earbuds',999)">Add to Cart</button>
+  </div>
+
+  <div class="cart">
+    <h2>Cart</h2>
+    <p id="cartItems">No items</p>
+    <p>Total: ₹<span id="total">0</span></p>
+
+    <h3>Place Order</h3>
+    <input type="text" id="name" placeholder="Your Name">
+    <input type="text" id="address" placeholder="Your Address">
+    <button onclick="placeOrder()">Confirm Order</button>
+  </div>
+
+</div>
 
 <script>
-async function askAI(){
-  const message = document.getElementById("msg").value;
+let cart = [];
+let total = 0;
 
-  const res = await fetch("/api/chat",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({message})
-  });
+function addToCart(name, price){
+  cart.push(name);
+  total += price;
+  document.getElementById("cartItems").innerText = cart.join(", ");
+  document.getElementById("total").innerText = total;
+}
 
-  const data = await res.json();
-  document.getElementById("chat").innerHTML += "<p>"+data.reply+"</p>";
+function placeOrder(){
+  let name = document.getElementById("name").value;
+  let address = document.getElementById("address").value;
+
+  if(name === "" || address === ""){
+    alert("Please fill all details");
+    return;
+  }
+
+  alert("Order placed successfully! Thank you " + name);
+  cart = [];
+  total = 0;
+  document.getElementById("cartItems").innerText = "No items";
+  document.getElementById("total").innerText = total;
 }
 </script>
 
