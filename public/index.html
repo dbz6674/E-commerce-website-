@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Store</title>
+</head>
+<body>
+<h1>My AI eCommerce Store</h1>
+
+<h2>Smart Watch - ₹1999</h2>
+<button onclick="alert('Added to cart')">Add to Cart</button>
+
+<h3>Ask AI</h3>
+<input id="msg" placeholder="Ask about product">
+<button onclick="askAI()">Ask</button>
+
+<div id="chat"></div>
+
+<script>
+async function askAI(){
+  const message = document.getElementById("msg").value;
+
+  const res = await fetch("/api/chat",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({message})
+  });
+
+  const data = await res.json();
+  document.getElementById("chat").innerHTML += "<p>"+data.reply+"</p>";
+}
+</script>
+
+</body>
+</html>
